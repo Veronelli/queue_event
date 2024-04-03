@@ -1,0 +1,8 @@
+services:
+  queue_events:
+    container_name: queue_events_backend
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app:rw
