@@ -2,3 +2,4 @@
 
 *   Create base proyect
 *   Create Base image of alphine python
+*   Created Base Fast api app
