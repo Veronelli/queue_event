@@ -16,4 +16,4 @@ VOLUME [ "/app/.venv" ]
 RUN chmod +x . &&\
     apk add git
 
-CMD tail -f /dev/null
+CMD ["/bin/sh", "bash/queue_event"]
