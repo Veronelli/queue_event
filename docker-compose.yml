@@ -6,3 +6,8 @@ services:
       - 8000:8000
     volumes:
       - ./:/app:rw
+  postgres:
+    image: postgres:16.2-alpine
+    container_name: _queue_events
+    environment:
+      POSTGRES_PASSWORD: example
