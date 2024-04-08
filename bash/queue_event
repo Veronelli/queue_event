@@ -1,5 +1,4 @@
 #!/bin/bash
 git config --global --add safe.directory /app
 source .venv/bin/activate
-pre-commit install
 uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
