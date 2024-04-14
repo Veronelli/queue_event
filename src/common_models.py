@@ -3,6 +3,7 @@ Common project models
 """
 
 from typing import Any
+from pydantic import BaseModel, NonNegativeInt
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -19,3 +20,6 @@ class SingletonMeta(type):
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
         return cls._instances[cls]
+    
+class CommonModel(BaseModel):
+    id: NonNegativeInt

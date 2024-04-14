@@ -16,10 +16,7 @@ class Event(Base):
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String(30))
     tickets = Column(Integer)
-    
-    ticket_id = Column(Integer, ForeignKey('tickets.id'))
-    ticket = relationship('Ticket', back_populates='events')
-    
+     
 
 class Ticket(Base):
     __tablename__ = "tickets"
@@ -29,6 +26,9 @@ class Ticket(Base):
     lastname = Column(String(20))
     email = Column(String(25), unique=True)
     ticket_number = Column(Integer, autoincrement=True)
+    
+    event_id = Column(Integer, ForeignKey('events.id'))
+    event = relationship('Event', back_populates='tickets')
     
 def print_all_tables(engine):
     # To load metdata and existing database schema
