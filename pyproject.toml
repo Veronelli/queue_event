@@ -9,6 +9,10 @@ license = "IDNK"
 python = "^3.10"
 fastapi = "^0.110.1"
 uvicorn = "^0.29.0"
+sqlalchemy = "^2.0.29"
+psycopg2-binary = "^2.9.9"
+sqlalchemy-utils = "^0.41.2"
+pytest = "^8.1.1"
 
 [tool.poetry.dev-dependencies]
 
