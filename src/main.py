@@ -3,17 +3,26 @@ FastAPI main file to run project
 """
 
 from contextlib import asynccontextmanager
+from typing import TypedDict
 from fastapi import FastAPI
-from src.database.postgres import PostgresConnection, engine
+from sqlalchemy import Engine
+from sqlalchemy.orm import Session
+from src.database.postgres import SQLSession, engine
 
+class APIContext(TypedDict):
+    engine: Engine
+    sql_session: Session
 
-context = {}
+context:APIContext = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    context["sql_connection_1"] = PostgresConnection(engine=engine) 
+    context["engine"] = engine
+    sql_session = SQLSession(engine)
+    context["engine"].connect()
+    context["sql_session"] = sql_session
     yield
-    context["sql_connection_1"].connection.close()
+    context["engine"].close()
     
 app = FastAPI(lifespan=lifespan)
 
