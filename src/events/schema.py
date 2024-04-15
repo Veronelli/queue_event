@@ -10,6 +10,3 @@ class Event(Base):
     name = Column(String(30))
     tickets = Column(Integer)
     
-    ticket_id = Column(Integer, ForeignKey('tickets.id'))
-    ticket = relationship('Ticket', back_populates='events')
-    

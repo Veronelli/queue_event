@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.common_models import CommonModel
 
@@ -12,6 +12,8 @@ class BaseEvent(BaseModel):
     """
     name: str
     tickets: int
+    
+    model_config = ConfigDict(orm_mode=True)
 
 class CreatedEvent(BaseEvent, CommonModel):
     ...

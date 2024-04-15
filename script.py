@@ -45,7 +45,7 @@ if not database_exists(engine.url):
     print("Creating Database")
     create_database(engine.url)
     print("Creating Tables")
-    Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
 
 print_all_tables(engine)
 print("Finish!!")

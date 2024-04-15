@@ -15,5 +15,5 @@ async def test_create_event(client:AsyncClient)->None:
         "name": "Event for test",
         "tickets": 128,
     }
-    response = await client.post("/events", json=event_payload)
+    response = await client.post(url="/events/", json=event_payload)
     

@@ -8,24 +8,22 @@ from fastapi import FastAPI
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 from src.database.postgres import SQLSession, engine
-
-class APIContext(TypedDict):
-    engine: Engine
-    sql_session: Session
-
-context:APIContext = {}
+from src.events.endpoint import router as event_router
+from src.contexts.main import global_context
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    context["engine"] = engine
+    global_context["engine"] = engine
     sql_session = SQLSession(engine)
-    context["engine"].connect()
-    context["sql_session"] = sql_session
+    global_context["engine"].connect()
+    global_context["sql_session"] = sql_session
     yield
-    context["engine"].close()
+    global_context["engine"].close()
     
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+app.include_router(event_router)
