@@ -13,7 +13,6 @@ class BaseEvent(BaseModel):
     name: str
     tickets: int
     
-    model_config = ConfigDict(orm_mode=True)
 
 class CreatedEvent(BaseEvent, CommonModel):
-    ...
+    model_config = ConfigDict(from_attributes=True)
