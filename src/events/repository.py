@@ -24,15 +24,21 @@ async def save(event: BaseEvent) -> CreatedEvent:
     return event_schema
 
 
-async def get_events(criteria: Optional[dict[str, Any]] = None) -> list[CreatedEvent]:
+def get_events(id: Optional[dict[str, Any]] = None) -> list[CreatedEvent]:
     """
-    Obtains all events using dynamic criterias
+    Obtains all events and filter by id
     Args:
-        restriction: a dictionary that should provide a key value to event filter
+        id: id number of event
     Returns:
         a list of created product filtered
     """
-    results = global_context["sql_session"].query(Event).all()
+    results = []
+    if id:
+        results = (
+            global_context["sql_session"].query(Event).filter(Event.id == id).all()
+        )
+    else:
+        results = global_context["sql_session"].query(Event).all()
     events = [CreatedEvent(**result.__dict__) for result in results]
     return events
 

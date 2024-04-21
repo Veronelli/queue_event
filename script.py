@@ -1,4 +1,4 @@
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Engine, ForeignKey, Integer, MetaData, String, create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import database_exists, create_database

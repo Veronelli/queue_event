@@ -75,3 +75,24 @@ async def test_delete_event_not_found(client: AsyncClient) -> None:
 
     response = await client.delete(f"/events/{event_id}")
     assert status.HTTP_404_NOT_FOUND == response.status_code
+
+@pytest.mark.asyncio
+async def test_get_event(client: AsyncClient) -> None:
+    """
+    get event created and find by id into obtained in endpoint
+    """
+    event_list = [
+        BaseEvent(name="Event 1", tickets=150),
+        BaseEvent(name="Event 2", tickets=200),
+        BaseEvent(name="Event 3", tickets=250),
+    ]
+    event_created: list[CreatedEvent] = await asyncio.gather(
+        *(save(event) for event in event_list)
+    )
+    response = await client.get(f"/events/{event_created[1].id}")
+    
+    assert status.HTTP_200_OK == response.status_code
+    assert CreatedEvent(
+                **event_created[1].__dict__
+            ).model_dump(mode="json") == response.json()
+    await asyncio.gather(*[delete(event.id) for event in event_created])
