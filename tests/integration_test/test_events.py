@@ -20,9 +20,9 @@ async def test_get_all_event(client: AsyncClient) -> None:
     the service.
     """
     event_list = [
-        BaseEvent(name="Event 1", tickets=150),
-        BaseEvent(name="Event 2", tickets=200),
-        BaseEvent(name="Event 3", tickets=250),
+        BaseEvent(name="Event 1", tickets_availables=150),
+        BaseEvent(name="Event 2", tickets_availables=200),
+        BaseEvent(name="Event 3", tickets_availables=250),
     ]
     event_created: list[CreatedEvent] = await asyncio.gather(
         *(save(event) for event in event_list)
@@ -42,7 +42,7 @@ async def test_create_event(client: AsyncClient) -> None:
     """
     event_payload = {
         "name": "Event for test",
-        "tickets": 128,
+        "ticketsAvailables": 128,
     }
     response = await client.post(url="/events/", json=event_payload)
     content = response.json()
@@ -58,7 +58,7 @@ async def test_delete_event(client: AsyncClient) -> None:
 
     event_payload = {
         "name": "Event for test",
-        "tickets": 128,
+        "ticketsAvailables": 128,
     }
 
     event_created = await save(BaseEvent(**event_payload))

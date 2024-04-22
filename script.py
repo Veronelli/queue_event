@@ -15,7 +15,11 @@ class Event(Base):
     
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String(30))
-    tickets = Column(Integer)
+    tickets_availables = Column(Integer)
+    tickets = relationship(
+        "Ticket",
+        backref="event"
+    )
      
 
 class Ticket(Base):
@@ -25,8 +29,7 @@ class Ticket(Base):
     name = Column(String(20))
     lastname = Column(String(20))
     email = Column(String(25), unique=True)
-    ticket_number = Column(Integer, autoincrement=True)
-    
+    ticket_number = Column(Integer, autoincrement=True)    
     event_id = Column(Integer, ForeignKey('events.id'))
     event = relationship('Event', back_populates='tickets')
     

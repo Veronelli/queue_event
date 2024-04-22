@@ -8,5 +8,7 @@ class Event(Base):
     
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String(30))
-    tickets = Column(Integer)
-    
+    tickets_availables = Column(Integer)
+    tickets = relationship(
+        "Ticket",
+    )

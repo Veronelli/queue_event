@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.common_models import CommonModel
 
@@ -11,7 +11,7 @@ class BaseEvent(BaseModel):
         ticket: number of limit ticket to sale
     """
     name: str
-    tickets: int
+    tickets_availables: int = Field(serialization_alias="ticketsAvailables")
     
 
 class CreatedEvent(BaseEvent, CommonModel):

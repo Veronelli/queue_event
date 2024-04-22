@@ -16,7 +16,7 @@ async def save(event: BaseEvent) -> CreatedEvent:
     Returns:
         event created
     """
-
+    breakpoint()
     event_schema = Event(**event.model_dump())
     global_context["sql_session"].add(event_schema)
     global_context["sql_session"].commit()
