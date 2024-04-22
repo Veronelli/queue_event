@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field
-
+from pydantic.alias_generators import to_camel
 from src.common_models import CommonModel
 
 class BaseEvent(BaseModel):
@@ -11,8 +11,7 @@ class BaseEvent(BaseModel):
         ticket: number of limit ticket to sale
     """
     name: str
-    tickets_availables: int = Field(serialization_alias="ticketsAvailables")
-    
+    tickets_availables: int = Field(serialization_alias="ticketsAvailables", alias_priority="ticketsAvailables")
 
 class CreatedEvent(BaseEvent, CommonModel):
     model_config = ConfigDict(from_attributes=True)

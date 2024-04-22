@@ -18,9 +18,8 @@ def import_connection(engine: Engine)->Connection:
     """
     Instance Sigleton to return connection
     """
-    from src.database.postgres import SQLSession
     
-    return SQLSession(engine).session
+    return engine.connect()
 
 @pytest.fixture(name="app")
 def application()->FastAPI:

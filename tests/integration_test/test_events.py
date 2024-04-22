@@ -30,7 +30,7 @@ async def test_get_all_event(client: AsyncClient) -> None:
     response = await client.get("/events/")
     
     assert status.HTTP_200_OK == response.status_code
-    assert [CreatedEvent(**result.__dict__).model_dump(mode="json") for result in event_created] == response.json() 
+    assert [CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in event_created] == response.json() 
     await asyncio.gather(*[delete(event.id) for event in event_created])
 
 
@@ -42,7 +42,7 @@ async def test_create_event(client: AsyncClient) -> None:
     """
     event_payload = {
         "name": "Event for test",
-        "ticketsAvailables": 128,
+        "tickets_availables": 128,
     }
     response = await client.post(url="/events/", json=event_payload)
     content = response.json()
@@ -58,7 +58,7 @@ async def test_delete_event(client: AsyncClient) -> None:
 
     event_payload = {
         "name": "Event for test",
-        "ticketsAvailables": 128,
+        "tickets_availables": 128,
     }
 
     event_created = await save(BaseEvent(**event_payload))
@@ -82,9 +82,9 @@ async def test_get_event(client: AsyncClient) -> None:
     get event created and find by id into obtained in endpoint
     """
     event_list = [
-        BaseEvent(name="Event 1", tickets=150),
-        BaseEvent(name="Event 2", tickets=200),
-        BaseEvent(name="Event 3", tickets=250),
+        BaseEvent(name="Event 1", tickets_availables=150),
+        BaseEvent(name="Event 2", tickets_availables=200),
+        BaseEvent(name="Event 3", tickets_availables=250),
     ]
     event_created: list[CreatedEvent] = await asyncio.gather(
         *(save(event) for event in event_list)
@@ -94,5 +94,5 @@ async def test_get_event(client: AsyncClient) -> None:
     assert status.HTTP_200_OK == response.status_code
     assert CreatedEvent(
                 **event_created[1].__dict__
-            ).model_dump(mode="json") == response.json()
+            ).model_dump(mode="json", by_alias=True) == response.json()
     await asyncio.gather(*[delete(event.id) for event in event_created])

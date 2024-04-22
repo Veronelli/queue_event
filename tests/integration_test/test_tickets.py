@@ -16,7 +16,7 @@ async def test_create_ticket(client: AsyncClient) -> None:
     Create a ticket and store to postgres, then remove event.
     Compare if the data stored is correctly saved
     """
-    event = BaseEvent(name="Event", tickets=120)
+    event = BaseEvent(name="Event", tickets_availables=120)
     event_created = await save_event(event)
     ticket = {
         "name": "John",
