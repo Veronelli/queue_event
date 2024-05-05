@@ -3,6 +3,7 @@ Event test declaration
 """
 
 import asyncio
+import uuid
 from httpx import AsyncClient
 import pytest
 from fastapi import status
@@ -28,7 +29,6 @@ async def test_get_all_event(client: AsyncClient) -> None:
         *(save(event) for event in event_list)
     )
     response = await client.get("/events/")
-    
     assert status.HTTP_200_OK == response.status_code
     assert [CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in event_created] == response.json() 
     await asyncio.gather(*[delete(event.id) for event in event_created])
@@ -71,8 +71,7 @@ async def test_delete_event_not_found(client: AsyncClient) -> None:
     """
     Test if the event exist and is deleted
     """
-    event_id = 23
-
+    event_id = str(uuid.uuid4())
     response = await client.delete(f"/events/{event_id}")
     assert status.HTTP_404_NOT_FOUND == response.status_code
 

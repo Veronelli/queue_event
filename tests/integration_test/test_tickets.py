@@ -20,11 +20,11 @@ async def test_create_ticket(client: AsyncClient) -> None:
     event_created = await save_event(event)
     ticket = {
         "name": "John",
-        "lastaname": "Broew",
+        "lastname": "Broew",
         "email": "jbroew@veronelli.com",
-        "eventId": event_created.id,
+        "event_id": event_created.id,
     }
-    response = await client.post("/ticket", json=ticket)
+    response = await client.post("/tickets/", json=ticket)
     content = response.json()
     assert status.HTTP_201_CREATED == response.status_code
     assert ticket == response.json()

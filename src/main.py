@@ -9,6 +9,7 @@ from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 from src.database.postgres import SQLSession, engine
 from src.events.endpoint import router as event_router
+from src.tickets.endpoint import router as ticket_router
 from src.contexts.main import global_context
 
 @asynccontextmanager
@@ -27,3 +28,4 @@ async def root():
     return {"message": "Hello World"}
 
 app.include_router(event_router)
+app.include_router(ticket_router)

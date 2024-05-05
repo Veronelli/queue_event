@@ -3,6 +3,7 @@ Declaration of Event routes
 """
 
 from typing import Annotated
+from uuid import UUID
 from fastapi import APIRouter, status, Path, Response
 from pydantic import NonNegativeInt
 from sqlalchemy.orm.exc import UnmappedInstanceError
@@ -24,7 +25,7 @@ async def create(event: BaseEvent)->CreatedEvent:
     return await save(event)
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def remove(id:Annotated[NonNegativeInt, Path()])->Response:
+async def remove(id:Annotated[UUID, Path()])->Response:
     try:
         await delete(id)
         return Response(status_code=status.HTTP_204_NO_CONTENT)

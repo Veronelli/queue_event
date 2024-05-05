@@ -3,7 +3,8 @@ Common project models
 """
 
 from typing import Any
-from pydantic import BaseModel, NonNegativeInt
+import uuid
+from pydantic import UUID4, BaseModel, NonNegativeInt
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -22,4 +23,4 @@ class SingletonMeta(type):
         return cls._instances[cls]
     
 class CommonModel(BaseModel):
-    id: NonNegativeInt
+    id: uuid.UUID
