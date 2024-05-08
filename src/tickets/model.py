@@ -3,6 +3,7 @@ Declation of all models related to Ticket
 """
 
 from typing import Optional
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 from src.common_models import CommonModel
@@ -22,7 +23,7 @@ class BaseTicket(BaseModel):
     name: str
     lastname: str
     email: str
-    event_id: Optional[int] = Field(serialization_alias="eventId")
+    event_id: Optional[UUID] = Field(serialization_alias="eventId")
 
 class TicketCreated(BaseTicket, CommonModel):
     """

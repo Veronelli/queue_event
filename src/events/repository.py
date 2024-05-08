@@ -3,6 +3,7 @@ Repository for Event endpoint oprations
 """
 
 from typing import Any, Optional
+from uuid import UUID
 from pydantic import NonNegativeInt
 from src.events.model import BaseEvent, CreatedEvent
 from src.events.schema import Event
@@ -43,7 +44,7 @@ def get_events(id: Optional[dict[str, Any]] = None) -> list[CreatedEvent]:
     return events
 
 
-async def delete(id: NonNegativeInt) -> int:
+async def delete(id: UUID) -> int:
     """
     Delete an event
 

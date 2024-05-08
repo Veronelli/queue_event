@@ -1,3 +1,5 @@
+from random import randint
+from uuid import UUID
 from src.tickets.model import BaseTicket, TicketCreated
 from src.contexts.main import global_context
 from src.tickets.schema import Ticket
@@ -13,13 +15,14 @@ def save(ticket:BaseTicket)->TicketCreated:
     Returns
         A created ticket
     """
-    ticket_schema = Ticket(**ticket.model_dump())
+    random_number = randint(0,1000)
+    ticket_schema = Ticket(**ticket.model_dump(), ticket_number=random_number)
     global_context["sql_session"].add(ticket_schema)
     global_context["sql_session"].commit()
     global_context["sql_session"].refresh(ticket_schema)
     return ticket_schema
 
-async def delete(id: NonNegativeInt)->int:
+async def delete(id: UUID)->int:
     """
     Remove an ticket, if it does not exist throws an error
     
