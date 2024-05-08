@@ -5,7 +5,7 @@ from src.contexts.main import global_context
 from src.tickets.schema import Ticket
 from pydantic import NonNegativeInt
 
-def save(ticket:BaseTicket)->TicketCreated:
+async def save(ticket:BaseTicket)->TicketCreated:
     """
     Save ticket and set event relationship
     

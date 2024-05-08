@@ -16,5 +16,5 @@ class Ticket(Base):
     lastname = Column(String(20))
     email = Column(String(25), )
     ticket_number = Column(Integer, autoincrement=True)    
-    event_id = Column(UUID, ForeignKey('events.id'), nullable=True, primary_key=True, unique=True)
+    event_id = Column(UUID, ForeignKey('events.id'), nullable=True, unique=True)
     event = relationship('Event', )

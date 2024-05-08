@@ -7,3 +7,4 @@
 *   Test table and database creation
 *   Create an endpoint to save events and get information about these
 *   Added an endpoint to remove event
+*   List all tickets

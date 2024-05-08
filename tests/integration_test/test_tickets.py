@@ -2,12 +2,14 @@
 Ticket test declaration
 """
 
+import asyncio
 from httpx import AsyncClient
 import pytest
 from fastapi import status
-from src.events.model import BaseEvent
+from src.events.model import BaseEvent, CreatedEvent
 from src.events.repository import save as save_event, delete as delete_event
-from src.tickets.repository import delete as delete_ticket
+from src.tickets.model import BaseTicket
+from src.tickets.repository import delete as delete_ticket, save as save_ticket
 
 
 @pytest.mark.asyncio
@@ -42,3 +44,41 @@ async def test_create_ticket(client: AsyncClient) -> None:
         assert ticket == content
         await delete_ticket(response.json()["id"])
         await delete_event(event_created.id)
+
+
+@pytest.mark.asyncio
+async def test_list_tickets(client)->None:
+    """
+    Create a new ticket and remove from endpoint the created ticket
+    """
+    event = BaseEvent(name="Event 3", tickets_availables=250)
+    event_created = await save_event(event) 
+    tickets = [{
+        "name": "John",
+        "lastname": "Broew",
+        "email": "jbroew@veronelli.com",
+        "event_id": str(event_created.id),
+    },{
+        "name": "Fran",
+        "lastname": "Smith",
+        "email": "fsmith@veronelli.com",
+        "event_id": str(event_created.id),
+    },{
+        "name": "Mark",
+        "lastname": "Stone",
+        "email": "mstore@veronelli.com",
+        "event_id": str(event_created.id),
+    }
+    ]
+    created_tickets = [await save_ticket(BaseTicket(**ticket)) for ticket in tickets]
+    try:
+        response = await client.get("/")
+        breakpoint()
+    finally:
+        [
+            await delete_ticket(
+                created_ticket.id
+            ) for created_ticket in created_tickets
+        ]
+        await delete_event(event_created.id)        
+
