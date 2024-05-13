@@ -31,7 +31,7 @@ class Ticket(Base):
     lastname = Column(String(20))
     email = Column(String(25), )
     ticket_number = Column(Integer, autoincrement=True)    
-    event_id = Column(UUID, ForeignKey('events.id'), nullable=True, unique=True)
+    event_id = Column(UUID, ForeignKey('events.id'), nullable=True)
     event = relationship('Event', )
 
 def print_all_tables(engine):
