@@ -14,7 +14,7 @@ router = APIRouter(prefix="/events")
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def list()->list[CreatedEvent]:
-    return get_events()
+    return await get_events()
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get(id:Annotated[UUID, Path])->CreatedEvent:

@@ -5,6 +5,20 @@ from src.contexts.main import global_context
 from src.tickets.schema import Ticket
 from pydantic import NonNegativeInt
 
+async def get_tickets()->list[TicketCreated]:
+    """
+    List of ticket saved
+    
+    Returns:
+        A list tickets
+    """
+    list_tickets = []
+    results = global_context["sql_session"].query(Ticket).all()
+    list_tickets = [
+        TicketCreated(**result.__dict__) for result in results
+    ]
+    return list_tickets
+
 async def save(ticket:BaseTicket)->TicketCreated:
     """
     Save ticket and set event relationship

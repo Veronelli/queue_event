@@ -25,7 +25,7 @@ async def save(event: BaseEvent) -> CreatedEvent:
     return event_schema
 
 
-def get_events(id: Optional[dict[str, Any]] = None) -> list[CreatedEvent]:
+async def get_events(id: Optional[dict[str, Any]] = None) -> list[CreatedEvent]:
     """
     Obtains all events and filter by id
     Args:
