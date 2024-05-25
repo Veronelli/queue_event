@@ -44,6 +44,8 @@ async def test_get_all_event(client: AsyncClient) -> None:
         event_created0.id = ticket_created.id
         response = await client.get("/events/")
     finally:
+        #TODO: use SQL Model to organize project
+     
         breakpoint()
         assert status.HTTP_200_OK == response.status_code
         assert [CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in event_created] == response.json() 
