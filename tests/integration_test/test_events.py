@@ -10,6 +10,8 @@ from fastapi import status
 from src.events.model import BaseEvent
 from src.events.repository import delete, save
 from src.events.model import CreatedEvent
+from src.tickets.model import BaseTicket
+from src.tickets.repository import save as save_ticket, delete as delete_ticket
 
 
 @pytest.mark.asyncio
@@ -26,14 +28,32 @@ async def test_get_all_event(client: AsyncClient) -> None:
             BaseEvent(name="Event 2", tickets_availables=200),
             BaseEvent(name="Event 3", tickets_availables=250),
         ]
-        event_created: list[CreatedEvent] = await asyncio.gather(
-            *(save(event) for event in event_list)
+
+        event_created0 = await asyncio.gather(
+            save(event_list[0]),
+            save(event_list[1]),
+            save(event_list[2])
         )
+        ticket = BaseTicket(
+            name= "John",
+            lastname= "Broew",
+            email= "jbroew@veronelli.com",
+            event_id=str(event_created0.id),
+        )
+        ticket_created = await save_ticket(ticket)
+        event_created0.id = ticket_created.id
         response = await client.get("/events/")
     finally:
+        breakpoint()
         assert status.HTTP_200_OK == response.status_code
         assert [CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in event_created] == response.json() 
-        await asyncio.gather(*[delete(event.id) for event in event_created])
+        
+        await asyncio.gather(
+            delete(event_created0.id),
+            delete(event_created1.id),
+            delete(event_created2.id)
+        )
+        await delete_ticket(ticket_created.id)
 
 
 @pytest.mark.asyncio
