@@ -1,7 +1,7 @@
 from sqlalchemy import Connection, Engine
 from sqlalchemy_utils import database_exists
-from src.tickets.schema import Ticket
-from src.events.schema import Event
+from src.tickets.sql_model import Ticket
+from src.events.sql_models import Event
 
 def test_created_database_is_success(
     engine:Engine)->None:

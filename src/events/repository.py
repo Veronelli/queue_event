@@ -5,7 +5,7 @@ Repository for Event endpoint oprations
 from typing import Any, Optional
 from pydantic import NonNegativeInt
 from src.events.model import BaseEvent, CreatedEvent
-from src.events.schema import Event
+from src.events.sql_models import Event
 from src.contexts.main import global_context
 
 

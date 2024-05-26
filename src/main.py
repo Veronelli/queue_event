@@ -27,5 +27,5 @@ app = FastAPI(lifespan=lifespan)
 async def root():
     return {"message": "Hello World"}
 
-app.include_router(event_router)
-app.include_router(ticket_router)
+app.include_router(event_router, tags=["Events"])
+app.include_router(ticket_router, tags=["Tickets"])

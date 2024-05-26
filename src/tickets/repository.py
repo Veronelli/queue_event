@@ -1,6 +1,6 @@
 from src.tickets.model import BaseTicket, TicketCreated
 from src.contexts.main import global_context
-from src.tickets.schema import Ticket
+from src.tickets.sql_model import Ticket
 from pydantic import NonNegativeInt
 
 def save(ticket:BaseTicket)->TicketCreated:
