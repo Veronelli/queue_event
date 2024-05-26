@@ -1,9 +1,25 @@
+from random import randint
+from uuid import UUID
 from src.tickets.model import BaseTicket, TicketCreated
 from src.contexts.main import global_context
 from src.tickets.sql_model import Ticket
 from pydantic import NonNegativeInt
 
-def save(ticket:BaseTicket)->TicketCreated:
+async def get_tickets()->list[TicketCreated]:
+    """
+    List of ticket saved
+    
+    Returns:
+        A list tickets
+    """
+    list_tickets = []
+    results = global_context["sql_session"].query(Ticket).all()
+    list_tickets = [
+        TicketCreated(**result.__dict__) for result in results
+    ]
+    return list_tickets
+
+async def save(ticket:BaseTicket)->TicketCreated:
     """
     Save ticket and set event relationship
     
@@ -13,13 +29,14 @@ def save(ticket:BaseTicket)->TicketCreated:
     Returns
         A created ticket
     """
-    ticket_schema = Ticket(**ticket.model_dump())
+    random_number = randint(0,1000)
+    ticket_schema = Ticket(**ticket.model_dump(), ticket_number=random_number)
     global_context["sql_session"].add(ticket_schema)
     global_context["sql_session"].commit()
     global_context["sql_session"].refresh(ticket_schema)
     return ticket_schema
 
-async def delete(id: NonNegativeInt)->int:
+async def delete(id: UUID)->int:
     """
     Remove an ticket, if it does not exist throws an error
     
