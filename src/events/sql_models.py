@@ -12,5 +12,5 @@ class Event(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, unique=True, primary_key=True)
     name:str
     tickets_availables:int
-    tickets: Optional[list["Ticket"]] = Relationship(back_populates="tickets",)
+    tickets: Optional[list['Ticket']] = Relationship(back_populates="event",)
     model_config = ConfigDict(arbitrary_types_allowed=True)

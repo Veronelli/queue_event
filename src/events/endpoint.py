@@ -18,7 +18,7 @@ async def list()->list[CreatedEvent]:
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def get(id:Annotated[UUID, Path])->CreatedEvent:
-    return  get_events(id=id)[0]
+    return (await get_events(id=id))[0]
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=CreatedEvent)
 async def create(event: BaseEvent)->CreatedEvent:

@@ -22,18 +22,17 @@ async def test_get_all_event(client: AsyncClient) -> None:
     We will compare of the data created is the same with Event obtained from
     the service.
     """
-    try:
-        event_list = [
-            BaseEvent(name="Event 1", tickets_availables=150),
-            BaseEvent(name="Event 2", tickets_availables=200),
-            BaseEvent(name="Event 3", tickets_availables=250),
-        ]
+    event_list = [
+        BaseEvent(name="Event 1", tickets_availables=150),
+        BaseEvent(name="Event 2", tickets_availables=200),
+        BaseEvent(name="Event 3", tickets_availables=250),
+    ]
 
-        event_created0 = await asyncio.gather(
-            save(event_list[0]),
-            save(event_list[1]),
-            save(event_list[2])
-        )
+    event_created0 = await save(event_list[0])
+    event_created1 = await save(event_list[1])
+    event_created2 = await save(event_list[2])
+    try:
+        
         ticket = BaseTicket(
             name= "John",
             lastname= "Broew",
@@ -41,19 +40,17 @@ async def test_get_all_event(client: AsyncClient) -> None:
             event_id=str(event_created0.id),
         )
         ticket_created = await save_ticket(ticket)
-        event_created0.id = ticket_created.id
         response = await client.get("/events/")
+        assert status.HTTP_200_OK == response.status_code
+        assert [
+            CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in [event_created0, event_created1, event_created2]] == response.json() 
+        
     finally:
         #TODO: use SQL Model to organize project
-     
-        breakpoint()
-        assert status.HTTP_200_OK == response.status_code
-        assert [CreatedEvent(**result.__dict__).model_dump(mode="json", by_alias=True) for result in event_created] == response.json() 
-        
-        await asyncio.gather(
+        asyncio.gather(
             delete(event_created0.id),
             delete(event_created1.id),
-            delete(event_created2.id)
+            delete(event_created2.id)   
         )
         await delete_ticket(ticket_created.id)
 

@@ -18,6 +18,6 @@ class Ticket(SQLModel, table=True):
         default=None,
         foreign_key="events.id"
         )
-    event: "Event" = Relationship(back_populates="event ")
+    event: "Event" = Relationship(back_populates="tickets")
 
     email_validator = field_validator("email", mode="before")(validate_email)

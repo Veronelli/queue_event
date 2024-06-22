@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID, uuid4
 from pydantic import ConfigDict, field_validator, validate_email
 from sqlalchemy import Engine, MetaData, create_engine
@@ -15,9 +15,9 @@ class Event(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, unique=True, primary_key=True)
     name:str
     tickets_availables:int
-    tickets: List["Ticket"] = Relationship(back_populates="tickets")
-
+    tickets: Optional[list['Ticket']] = Relationship(back_populates="event",)
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
     
 class Ticket(SQLModel, table=True):
     __tablename__ = "tickets"
@@ -25,15 +25,15 @@ class Ticket(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     name: str = Field(max_length=20)
     lastname: str = Field(max_length=20)
-    email:str = Field(max_length=25)
+    email: str = Field(max_length=25)
     ticket_number:int
     event_id: UUID | None = Field(
         default=None,
         foreign_key="events.id"
         )
-    event: Event = Relationship(back_populates="events")
-    # email_validator = field_validator("email", mode="before")(validate_email)
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    event: "Event" = Relationship(back_populates="tickets")
+
+    email_validator = field_validator("email", mode="before")(validate_email)
 
 
 def print_all_tables(engine):
