@@ -73,7 +73,6 @@ async def test_list_tickets(client)->None:
     created_tickets = [await save_ticket(BaseTicket(**ticket)) for ticket in tickets]
     try:
         response = await client.get("/tickets/")
-        breakpoint()
     finally:
         [
             await delete_ticket(

@@ -16,7 +16,7 @@ async def save(event: BaseEvent) -> CreatedEvent:
     Returns:
         event created
     """
-    event_schema = Event(**event.model_dump())
+    event_schema = Event.model_validate(event)
     global_context["sql_session"].add(event_schema)
     global_context["sql_session"].commit()
     global_context["sql_session"].refresh(event_schema)
